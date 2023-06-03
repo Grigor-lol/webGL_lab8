@@ -64,7 +64,7 @@ function webGLStart() {
 	
 	model = mat4.translate(mat4.create(), mat4.create(), [0, -0.3, 0])
 	
-	bumpTexture = getTexture("textures/orange2.jpg")
+	bumpTexture = getTexture("textures/bump3.png")
 	
 	view = mat4.rotateY(mat4.create(), mat4.rotateX(mat4.create(), mat4.create(), d), d)
 	
@@ -133,7 +133,10 @@ function initLight() {
 	let uAmbientLightColor = gl.getUniformLocation(shaderProgram, 'uAmbientLightColor')
 	let uDiffuseLightColor = gl.getUniformLocation(shaderProgram, 'uDiffuseLightColor')
 	let uSpecularLightColor = gl.getUniformLocation(shaderProgram, 'uSpecularLightColor')
-	
+	let uShineness = gl.getUniformLocation(shaderProgram, 'shininess')
+
+
+	gl.uniform1f(uShineness,shininess)
 	gl.uniform3fv(uLightPosition, [0.0, -0.5, -5.0])
 	gl.uniform3fv(uAmbientLightColor, [ambient, ambient, ambient])
 	gl.uniform3fv(uDiffuseLightColor, [0.7, 0.7, 0.7])

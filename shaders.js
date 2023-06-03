@@ -31,7 +31,7 @@ const VS_SOURCE =
 						vec3 vertexPositionEye3 = vertexPositionEye4.xyz / vertexPositionEye4.w;
 						lightDirection = normalize(uLightPosition - vertexPositionEye3);
 						
-						viewVectorEye = -normalize(vertexPositionEye3);
+						viewVectorEye = normalize(viewVectorEye - vertexPositionEye3);
 					}`
 
 const FS_SOURCE =
@@ -46,9 +46,8 @@ const FS_SOURCE =
 					varying vec3 lightDirection;
 					varying vec3 viewVectorEye;
 					
-					varying float attenuation;
 					
-					const float shininess = 50.0;
+					uniform float shininess;
 					
 					uniform sampler2D uSamplerNum;
 					varying vec2 vTextureCoord;
@@ -64,7 +63,6 @@ const FS_SOURCE =
 						vec3 yGradient = yM - yP;
 						
 						vec3 normal2 = normal + vTextureCoord.x * xGradient + vTextureCoord.y * yGradient;
-						//vec3 normal2 = normal + vec3(xGradient.x, yGradient.y, normal.z);
 						
 						float diffuseLightDot = max(dot(normal2, lightDirection), 0.0);
 						

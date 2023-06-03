@@ -42,7 +42,7 @@ this.addEventListener('keydown', event => {
 // 	precision: 3
 // })
 
-var ambient = 0.1
+var ambient = 0.27
 function updateAmbient(event, ui) {
     ambient = ui.value
 }
@@ -50,8 +50,21 @@ webglLessonsUI.setupSlider("#ambient", {
 	value: ambient, 
 	slide: updateAmbient, 
 	min: 0, 
-	max: 5, 
+	max: 1,
 	step: 0.01, 
+	precision: 2
+})
+
+var shininess = 50.0
+function updateShininess(event, ui) {
+	shininess = ui.value
+}
+webglLessonsUI.setupSlider("#shininess", {
+	value: shininess,
+	slide: updateShininess,
+	min: 1,
+	max: 100,
+	step: 0.01,
 	precision: 2
 })
 
