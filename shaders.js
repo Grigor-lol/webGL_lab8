@@ -6,8 +6,8 @@ const VS_SOURCE =
 					uniform mat4 uViewMatrix;
 					uniform mat4 uProjectionMatrix;
 					
-					uniform float uLinear;
-					uniform float uQuadratic;
+					//uniform float uLinear;
+					//uniform float uQuadratic;
 					
 					uniform vec3 uLightPosition;
 					
@@ -15,7 +15,7 @@ const VS_SOURCE =
 					varying vec3 lightDirection;
 					varying vec3 viewVectorEye;
 					
-					varying float attenuation;
+					//varying float attenuation;
 					
 					attribute vec2 aTextureCoord;
 					varying highp vec2 vTextureCoord;
@@ -23,10 +23,7 @@ const VS_SOURCE =
 					void main(void) {
 						mat4 mvMatrix = uViewMatrix * uModelMatrix;
 						gl_Position = uProjectionMatrix * mvMatrix * vec4(aVertexPosition, 1);
-						vTextureCoord = aTextureCoord;
-						
-						float distance = length(vec4(uLightPosition,1) - gl_Position);
-						attenuation = 1.0 / (1.0 + uLinear*distance + uQuadratic*distance*distance);
+						vTextureCoord = aTextureCoord;	
 						
 						normal = normalize(mat3(mvMatrix) * aVertexNormal);
 						
@@ -51,7 +48,7 @@ const FS_SOURCE =
 					
 					varying float attenuation;
 					
-					const float shininess = 100.0;
+					const float shininess = 50.0;
 					
 					uniform sampler2D uSamplerNum;
 					varying vec2 vTextureCoord;
@@ -74,9 +71,9 @@ const FS_SOURCE =
 						vec3 reflectionVector = normalize(reflect(-lightDirection, normal2));
 						
 						float specularLightDot = max(dot(reflectionVector, viewVectorEye), 0.0);
-						float specularLightParam = pow(specularLightDot, shininess);
+						float specularLightParam = pow(max(specularLightDot, 0.0), shininess);
 
-						vec3 vLightWeighting = (uAmbientLightColor + uDiffuseLightColor * diffuseLightDot + uSpecularLightColor * specularLightParam) * attenuation;
+						vec3 vLightWeighting = (uAmbientLightColor + uDiffuseLightColor * diffuseLightDot + uSpecularLightColor * specularLightParam);
 						gl_FragColor = vec4(uColor.rgb, uColor.a);
 						gl_FragColor.rgb *= vLightWeighting;
 					}`

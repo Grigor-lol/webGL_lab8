@@ -64,7 +64,7 @@ function webGLStart() {
 	
 	model = mat4.translate(mat4.create(), mat4.create(), [0, -0.3, 0])
 	
-	bumpTexture = getTexture("textures/bump3.png")
+	bumpTexture = getTexture("textures/orange2.jpg")
 	
 	view = mat4.rotateY(mat4.create(), mat4.rotateX(mat4.create(), mat4.create(), d), d)
 	
@@ -86,7 +86,7 @@ function webGLStart() {
 		gl.clearColor(1, 1, 1, 1)
 		gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT)
 
-		draw(size, [1, 0.6, 0], bumpTexture, model, view, mat4.create())
+		draw(size, [1, 0.5, 0], bumpTexture, model, view, mat4.create())
 		
 		last = now
 		requestAnimationFrame(render)
@@ -147,7 +147,7 @@ function initLight() {
 	let normalBuffer = gl.createBuffer()
 	gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer)
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(mesh.vertexNormals), gl.STATIC_DRAW)
-	
+
 	let aVertexNormal = gl.getAttribLocation(shaderProgram, 'aVertexNormal')
 	gl.enableVertexAttribArray(aVertexNormal)
 	gl.vertexAttribPointer(aVertexNormal, 3, gl.FLOAT, false, 12, 0)
