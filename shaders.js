@@ -1,13 +1,12 @@
 const VS_SOURCE =
 					`attribute vec3 aVertexPosition;
 					attribute vec3 aVertexNormal;
+					attribute vec2 aTextureCoord;
 					
 					uniform mat4 uModelMatrix;
 					uniform mat4 uViewMatrix;
 					uniform mat4 uProjectionMatrix;
 					
-					//uniform float uLinear;
-					//uniform float uQuadratic;
 					
 					uniform vec3 uLightPosition;
 					
@@ -15,9 +14,7 @@ const VS_SOURCE =
 					varying vec3 lightDirection;
 					varying vec3 viewVectorEye;
 					
-					//varying float attenuation;
 					
-					attribute vec2 aTextureCoord;
 					varying highp vec2 vTextureCoord;
 					
 					void main(void) {
@@ -53,25 +50,24 @@ const FS_SOURCE =
 					varying vec2 vTextureCoord;
 					
 					void main() {
-						float tCS = 0.011111;
-						vec3 xM = texture2D(uSamplerNum, vec2(vTextureCoord.x - tCS, vTextureCoord.y)).xyz;
-						vec3 xP = texture2D(uSamplerNum, vec2(vTextureCoord.x + tCS, vTextureCoord.y)).xyz;
-						vec3 yM = texture2D(uSamplerNum, vec2(vTextureCoord.x, vTextureCoord.y - tCS)).xyz;
-						vec3 yP = texture2D(uSamplerNum, vec2(vTextureCoord.x, vTextureCoord.y + tCS)).xyz;
+						vec3 normalMap = normal + texture2D(uSamplerNum, vTextureCoord).rgb;
 						
-						vec3 xGradient = xM - xP;
-						vec3 yGradient = yM - yP;
+						vec3 newNormal =  normalize(normalMap * 2.0 - 1.0);
+						vec3 normLightDirection = normalize(lightDirection);
 						
-						vec3 normal2 = normal + vTextureCoord.x * xGradient + vTextureCoord.y * yGradient;
+						float diffuseVal = max(dot(newNormal, normLightDirection), 0.0);
+						float specular = 0.0;
 						
-						float diffuseLightDot = max(dot(normal2, lightDirection), 0.0);
+					    vec3 reflected = normalize(reflect(-normLightDirection, newNormal));      
+					    vec3 normViewVectorEye = normalize(-viewVectorEye); 
+					    
+					    float specAngle = max(dot(reflected, normViewVectorEye), 0.0);
+					    specular = pow(specAngle, shininess);
 						
-						vec3 reflectionVector = normalize(reflect(-lightDirection, normal2));
-						
-						float specularLightDot = max(dot(reflectionVector, viewVectorEye), 0.0);
-						float specularLightParam = pow(max(specularLightDot, 0.0), shininess);
-
-						vec3 vLightWeighting = (uAmbientLightColor + uDiffuseLightColor * diffuseLightDot + uSpecularLightColor * specularLightParam);
+						vec3 vLightWeighting = uAmbientLightColor +
+										  diffuseVal * uDiffuseLightColor +
+										  specular * uSpecularLightColor;
 						gl_FragColor = vec4(uColor.rgb, uColor.a);
 						gl_FragColor.rgb *= vLightWeighting;
+						
 					}`

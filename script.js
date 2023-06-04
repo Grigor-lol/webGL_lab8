@@ -20,34 +20,25 @@ function initShaders() {
 	}
 }
 
-function getTexture(url) {
-	let texture = gl.createTexture()
-	gl.bindTexture(gl.TEXTURE_2D, texture)
-	
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([0, 0, 255, 255]))
-	
-	let image = new Image()
-	image.crossOrigin = "anonymous"
-	image.onload = function() {
-		gl.bindTexture(gl.TEXTURE_2D, texture);
-		gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true)
-		gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image)
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST)
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST)
+function handleTextureLoaded(image, texture) {
+	gl.bindTexture(gl.TEXTURE_2D, texture);
+	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+}
+
+
+
+function registerTexture(imgSRC) {
+	let texture = gl.createTexture();
+	let image = new Image();
+	image.onload = function () {
+		handleTextureLoaded(image, texture);
 	}
-	image.src = url
-	image.onerror = function() {
-		alert("error")
-	}
-	
-	if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-		gl.generateMipmap(gl.TEXTURE_2D);
-	} else {
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-		gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-	}
-	
+	image.src = imgSRC;
 	return texture
 }
 
@@ -64,7 +55,7 @@ function webGLStart() {
 	
 	model = mat4.translate(mat4.create(), mat4.create(), [0, -0.3, 0])
 	
-	bumpTexture = getTexture("textures/bump3.png")
+	bumpTexture = registerTexture("textures/orange.jpg")
 	
 	view = mat4.rotateY(mat4.create(), mat4.rotateX(mat4.create(), mat4.create(), d), d)
 	
