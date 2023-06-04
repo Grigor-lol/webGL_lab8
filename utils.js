@@ -16,31 +16,6 @@ this.addEventListener('keydown', event => {
 	else if (event.code == "KeyD") pressed["KeyE"] = true
 })
 
-// var linear = 0
-// function updateLinear(event, ui) {
-//     linear = ui.value
-// }
-// webglLessonsUI.setupSlider("#linear", {
-// 	value: linear,
-// 	slide: updateLinear,
-// 	min: 0,
-// 	max: 1,
-// 	step: 0.001,
-// 	precision: 3
-// })
-//
-// var quadratic = 0
-// function updateQuadratic(event, ui) {
-//     quadratic = ui.value
-// }
-// webglLessonsUI.setupSlider("#quadratic", {
-// 	value: quadratic,
-// 	slide: updateQuadratic,
-// 	min: 0,
-// 	max: 0.25,
-// 	step: 0.001,
-// 	precision: 3
-// })
 
 var ambient = 0.27
 function updateAmbient(event, ui) {
@@ -68,12 +43,6 @@ webglLessonsUI.setupSlider("#shininess", {
 	precision: 2
 })
 
-
-
-
-function isPowerOf2(x) {
-	return x && !(x & (x - 1))
-}
 
 
 

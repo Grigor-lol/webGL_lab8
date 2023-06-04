@@ -7,7 +7,7 @@ function getShader(type, src) {
 
 function initShaders() {
 	let VS = getShader(gl.VERTEX_SHADER, VS_SOURCE)
-	let FS = getShader(gl.FRAGMENT_SHADER, FS_SOURCE)
+	let FS = getShader(gl.FRAGMENT_SHADER, FS_SOURCE_BUMP_MAP)
 
 	shaderProgram = gl.createProgram()
 	gl.attachShader(shaderProgram, VS)
@@ -55,7 +55,7 @@ function webGLStart() {
 	
 	model = mat4.translate(mat4.create(), mat4.create(), [0, -0.3, 0])
 	
-	bumpTexture = registerTexture("textures/orange.jpg")
+	bumpTexture = registerTexture("textures/bump3.png")
 	
 	view = mat4.rotateY(mat4.create(), mat4.rotateX(mat4.create(), mat4.create(), d), d)
 	

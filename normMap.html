@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>WebGL</title>
+</head>
+
+<body onload="webGLStart()">
+<canvas id="canvasGL" ></canvas>
+<div style="display: flex;">
+  <div id="linear"></div>
+  <div id="quadratic"></div>
+  <div id="ambient"></div>
+  <div id="shininess"></div>
+</div>
+</body>
+</html>
+
+<script
+        src=https://cdnjs.cloudflare.com/ajax/libs/gl-matrix/2.8.1/gl-matrix-min.js
+        integrity="sha512-
+	zhHQR0/H5SEBL3Wn6yYSaTTZej12z0hVZKOv3TwCUXT1z5qeqGcXJLLrbERYRScEDDpYIJhPC1fk31gqR783iQ=="
+        crossorigin="anonymous" defer>
+</script>
+<script type="text/javascript" src="webgl-lessons-ui.js"></script>
+<script type="text/javascript" src="webgl-obj-loader.js"></script>
+<script type="text/javascript" src="shaders.js"></script>
+<script type="text/javascript" src="sphere2.obj.js"></script>
+<script type="text/javascript" src="utils.js"></script>
+<script type="text/javascript" src="script_normalMap.js"></script>
